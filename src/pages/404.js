@@ -1,18 +1,16 @@
-import React, { useReducer } from "react"
+import React from "react"
 
-import { NotFound } from "../components"
-import { GlobalComponent } from "../components/GlobalComponent"
-import { MainContext } from "../store/main/contexts"
-import mainReducer, { mainReducerinitialValue } from "../store/main/reducers"
-import { Header } from "../layout/Header/Header"
-import { Footer } from "../layout/Footer"
+// import { NotFound } from "../components"
+// import { GlobalComponent } from "../components/GlobalComponent"
+// import { MainContext } from "../store/main/contexts"
+// import mainReducer, { mainReducerinitialValue } from "../store/main/reducers"
+// import { Header } from "../layout/Header/Header"
+// import { Footer } from "../layout/Footer"
 
 export default function NotFoundPage() {
-  const [state, dispatch] = useReducer(mainReducer, mainReducerinitialValue)
-
   return (
     <>
-      <GlobalComponent />
+      {/* <GlobalComponent />
 
       <MainContext.Provider value={{ state, dispatch }}>
         <Header />
@@ -20,7 +18,7 @@ export default function NotFoundPage() {
         <NotFound />
 
         <Footer />
-      </MainContext.Provider>
+      </MainContext.Provider> */}
     </>
   )
 }

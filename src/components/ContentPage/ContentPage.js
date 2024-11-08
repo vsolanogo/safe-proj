@@ -118,19 +118,6 @@ const Content = styled(SanitizedHTML)`
 export default function ContentPage({ slug }) {
   const [data, setData] = useState({})
 
-  useEffect(() => {
-    fetchPage()
-  }, [])
-
-  const fetchPage = () => {
-    fetch(`https://sosafe.se/wp-json/wp/v2/pages/?slug=${slug}`, {
-      method: "GET",
-    })
-      .then(response => response.status === 200 && response.json())
-      .then(responseData => responseData && setData(responseData[0]))
-      .catch(error => console.error(error))
-  }
-
   const { id, title, content } = data
 
   return (

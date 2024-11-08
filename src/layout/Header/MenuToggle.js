@@ -8,9 +8,6 @@ import mixins from "../../styles/mixins"
 const ButtonS = styled.button`
   height: ${getRem(40)};
   width: ${getRem(40)};
-  border: 2px solid
-    ${({ theme: { colors }, color }) =>
-      color === colors.white ? colors.borderButton : colors.borderLight};
   border-radius: ${getRem(10)};
   background-color: transparent;
   outline: none;

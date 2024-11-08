@@ -74,11 +74,11 @@ export const AlarmEmergencyMessage = () => {
         {f("home.sliderSection.emergencyMessage.text")}
       </StyledText>
       <AnchorLink
-        href="https://alarm.sosafe.se/ZSRI7SV1"
+        href="https://google.com"
         rel="noopener noreferer"
         target="_blank"
       >
-        alarm.sosafe.se/ZSRI7SV1
+        google.com
       </AnchorLink>
     </MessageContainer>
   )

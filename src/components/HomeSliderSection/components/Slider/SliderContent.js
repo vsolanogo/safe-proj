@@ -7,7 +7,58 @@ import { slideData } from "../../dataHelpers/sliderData"
 import { ImagesBlock } from "../ImageCards/ImagesBlock"
 import { size } from "../../../../styles"
 import { SlideItemsView } from "./SlideItemsView"
-import { useInterval } from "react-hookedup"
+import { useInterval } from "usehooks-ts"
+
+export const SliderContent = ({ isInView, width }) => {
+  const [activeSlide, setActiveSlide] = useState(slideData[0])
+  const [showSlideItems, setShowSlideItems] = useState(false)
+
+  useInterval(() => {
+    if (!isInView) {
+      return
+    }
+
+    const currentActiveSlideIndex = slideData.findIndex(
+      slide => slide.id === activeSlide.id
+    )
+
+    let nextSlideIndex = 0
+    if (currentActiveSlideIndex + 1 <= slideData.length - 1) {
+      nextSlideIndex = currentActiveSlideIndex + 1
+    }
+
+    setActiveSlide(slideData[nextSlideIndex])
+  }, 5000)
+
+  useEffect(() => {
+    if (width > size.tablet && width <= size.laptop) {
+      setShowSlideItems(true)
+    }
+  }, [width])
+
+  return (
+    <Wrapper>
+      <LeftContent>
+        <SlideInButton
+          setShowSlideItems={setShowSlideItems}
+          showSlideItems={isInView}
+          activeSlide={activeSlide}
+          isInView={isInView}
+          setActiveSlide={setActiveSlide}
+        />
+        <SlideItemsView
+          activeSlide={activeSlide}
+          showSlideItems={isInView}
+          setActiveSlide={setActiveSlide}
+          width={width}
+        />
+      </LeftContent>
+      <RightContent>
+        <ImagesBlock activeSlide={activeSlide} showSlideItems={isInView} />
+      </RightContent>
+    </Wrapper>
+  )
+}
 
 const Wrapper = styled.div`
   display: flex;
@@ -65,54 +116,3 @@ const RightContent = styled.div`
     ${mixins.displayFlex("row", "center", "center")};
   }
 `
-
-export const SliderContent = ({ isInView, width }) => {
-  const [activeSlide, setActiveSlide] = useState(slideData[0])
-  const [showSlideItems, setShowSlideItems] = useState(false)
-
-  useInterval(() => {
-    if (!isInView) {
-      return
-    }
-
-    const currentActiveSlideIndex = slideData.findIndex(
-      slide => slide.id === activeSlide.id
-    )
-
-    let nextSlideIndex = 0
-    if (currentActiveSlideIndex + 1 <= slideData.length - 1) {
-      nextSlideIndex = currentActiveSlideIndex + 1
-    }
-
-    setActiveSlide(slideData[nextSlideIndex])
-  }, 5000)
-
-  useEffect(() => {
-    if (width > size.tablet && width <= size.laptop) {
-      setShowSlideItems(true)
-    }
-  }, [width])
-
-  return (
-    <Wrapper>
-      <LeftContent>
-        <SlideInButton
-          setShowSlideItems={setShowSlideItems}
-          showSlideItems={isInView}
-          activeSlide={activeSlide}
-          isInView={isInView}
-          setActiveSlide={setActiveSlide}
-        />
-        <SlideItemsView
-          activeSlide={activeSlide}
-          showSlideItems={isInView}
-          setActiveSlide={setActiveSlide}
-          width={width}
-        />
-      </LeftContent>
-      <RightContent>
-        <ImagesBlock activeSlide={activeSlide} showSlideItems={isInView} />
-      </RightContent>
-    </Wrapper>
-  )
-}

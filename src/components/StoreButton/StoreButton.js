@@ -22,9 +22,6 @@ const StyledButton = styled.a`
   font-weight: 400;
   color: ${({ color }) => color || theme.colors.darkFont};
   white-space: nowrap;
-  border: ${getRem(2)} solid
-    ${({ theme: { colors }, color }) =>
-      color === colors.white ? colors.borderButton : colors.borderLight};
 
   transition: border-color 0.3s ease-in-out;
 

@@ -108,7 +108,6 @@ const MoreInfo = styled.div`
 
 const TitleS = styled.h1`
   ${typographyCss};
-  font-family: ${({ theme }) => theme.fonts.title}, sans-serif;
   font-size: ${getRem(25)};
   line-height: ${getRem(37)};
   color: var(--darkfont-color);

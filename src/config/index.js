@@ -11,26 +11,11 @@ export const navbarLinks = {
     path: "/about-us",
     title: "aboutUs",
   },
-  // PRODUCT: {
-  //   path: "/product",
-  //   title: "product",
-  // },
-  //   BLOG: {
-  //     path: "https://sosafe.se/blog",
-  //     title: "blog",
-  //   },
-  //   SHOP: {
-  //     path: "https://sosafe.se/shop",
-  //     title: "shop",
-  //   },
+
   CONTACT_US: {
     path: "/contacts",
     title: "contacts",
   },
-  // FAQ: {
-  //   path: "/faq",
-  //   title: "FAQ",
-  // },
 }
 
 export const defaultMetaInfo = {

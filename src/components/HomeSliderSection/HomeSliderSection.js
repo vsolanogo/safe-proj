@@ -32,7 +32,6 @@ const Container = styled.div`
 
 const TitleS = styled.h1`
   ${typographyCss};
-  font-family: ${({ theme }) => theme.fonts.title}, sans-serif;
   opacity: 0;
   transform: translateY(20px);
   animation: ${fadeInElemBottom};

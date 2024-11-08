@@ -3,7 +3,6 @@ import { getRem } from "../../../utils"
 import { size } from "../../../styles"
 
 export const titleCss = css`
-  font-family: ${({ theme }) => theme.fonts.title}, sans-serif;
   font-weight: 400;
   line-height: ${getRem(55.83)};
   font-size: ${getRem(55)};

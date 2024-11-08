@@ -20,7 +20,6 @@ const a1 = keyframes`
 
 const TitleS = styled.h1`
   ${typographyCss};
-  font-family: ${({ theme }) => theme.fonts.title}, sans-serif;
   font-size: 25px;
   line-height: 101.3%;
   width: 250px;
@@ -120,11 +119,6 @@ export const Content = React.memo(
 
     const f = useFormatMessage()
 
-    const scrollToContactForm = () => {
-      const contactFormSection = document.getElementById("contact-form")
-      contactFormSection.scrollIntoView({ behavior: "smooth" })
-    }
-
     useEffect(() => {
       setRendered(true)
     }, [])
@@ -150,7 +144,6 @@ export const Content = React.memo(
           lineHeight={23}
           height={56}
           marginY={20}
-          onClick={scrollToContactForm}
         >
           {f("home.section1.button")}
         </ButtonS>

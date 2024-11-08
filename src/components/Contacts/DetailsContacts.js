@@ -89,14 +89,14 @@ export const DetailsContacts = () => {
 
       <LottieAnimationContainer ref={animationContainerRef} />
 
-      <LinkS href="mailto:info@sosafe.se">
-        <Mail /> info@sosafe.se
+      <LinkS href="mailto:info@google.com">
+        <Mail /> info@google.com
       </LinkS>
-      <LinkS href="tel:0775545454">
-        <ActiveCall /> 0775 54 54 54
+      <LinkS href="tel:0 ">
+        <ActiveCall /> 0
       </LinkS>
-      <LinkS href="https://goo.gl/maps/rdewX2ZXyNKtL6zHA">
-        <Marker /> Hammarbybacken 27 120 30 Stockholm
+      <LinkS href="https://google.com">
+        <Marker /> google.com
       </LinkS>
     </Wrapper>
   )

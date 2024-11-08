@@ -1,7 +1,5 @@
 import React, { useReducer } from "react"
-import { graphql } from "gatsby"
-
-import { FormSection, FAQs } from "../components"
+import { FormSection } from "../components"
 import { SimpleWayToCheck } from "../components/FAQs/SimpleWayToCheck"
 import { GlobalComponent } from "../components/GlobalComponent"
 import ShieldIcon from "../assets/svg/shield-check.inline.svg"
@@ -13,7 +11,7 @@ import { Footer } from "../layout/Footer"
 import { Splash } from "../layout/Splash"
 import { SharedDivider } from "../components/shared"
 
-export default function FAQ({ data }) {
+export default function FAQ() {
   const [state, dispatch] = useReducer(mainReducer, mainReducerinitialValue)
 
   return (
@@ -30,7 +28,6 @@ export default function FAQ({ data }) {
           text={"aboutUs.topSection.text"}
           icon={ShieldIcon}
         />
-        <FAQs content={data.allWordpressWlFaqPosts.edges} />
 
         <SharedDivider />
         <SharedDivider
@@ -57,18 +54,3 @@ export default function FAQ({ data }) {
     </>
   )
 }
-
-export const pageQuery = graphql`
-  query {
-    allWordpressWlFaqPosts {
-      edges {
-        node {
-          id
-          title
-          question
-          answer
-        }
-      }
-    }
-  }
-`

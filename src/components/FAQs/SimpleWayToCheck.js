@@ -1,9 +1,8 @@
 import React, { useState } from "react"
 import styled, { css } from "styled-components"
-import { SharedH1Nanotech, TextRoboto } from "../shared"
-import { parsePhoneNumberFromString } from "libphonenumber-js"
+import { TextRoboto } from "../shared"
 import { pressOnlyNumbersAndPlus } from "../../utils/PressOnlyNumbers"
-import { useInput, useFocus } from "react-hookedup"
+import { useBoolean } from "usehooks-ts"
 import { StaticImage } from "gatsby-plugin-image"
 import i5svg from "../../assets/svg/line-pattern.svg"
 import i1svg from "../../assets/svg/linedCircle.svg"
@@ -11,171 +10,21 @@ import img1 from "../../assets/svg/circleCheckmark.svg"
 import axios from "axios"
 import { useFormatMessage } from "../../hooks"
 
-const SWrapper = styled.section`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  margin: auto;
-  max-width: 81em;
-  padding: 3em 4em;
-  background: var(--cyan-color);
-  border-radius: 20px;
-
-  @media (max-width: 1000px) {
-    display: flex;
-    flex-direction: column-reverse;
-    padding: 2em;
-  }
-`
-
-const Wrapper = styled.div`
-  max-width: 106em;
-  width: 100%;
-  padding: 0;
-  margin-bottom: 3em;
-  transition: all 0.2s;
-  box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.08);
-
-  margin: 0 auto;
-  border: 1px solid #e4e4e4;
-  border-radius: 10px;
-  overflow: hidden;
-
-  &[data-active="true"] {
-    box-shadow: 0px 2px 13px rgba(0, 0, 0, 0.08);
-  }
-`
-
-const ESearchInput = styled.input`
-  border: 0;
-  border-radius: 6px;
-  width: 100%;
-  height: 50px;
-  font-family: "Roboto", Arial, Helvetica, sans-serif;
-  font-size: 16px;
-  color: #525151;
-  padding: 0 16px;
-
-  @media (max-width: 640px) {
-    font-size: 14px;
-  }
-
-  ::placeholder {
-    color: #e4e4e4;
-  }
-`
-
-const ESearch = styled.button`
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #181930;
-  right: 0;
-  border-radius: 10px;
-  height: 100%;
-  color: #fff;
-  font-weight: 500;
-  padding: 5px 10px;
-  margin: 0;
-  border: 0;
-  outline: 0;
-`
-
-const SCheckmarkWrapper = styled.button`
-  width: 18px;
-  height: 18px;
-  background-repeat: no-repeat;
-  background-position: center;
-  border: 0;
-  margin: 0 4px 0 0;
-  outline: none;
-  border-radius: 4px;
-  background-color: var(--cyan-color);
-  padding: 0;
-  background-image: url("data:image/svg+xml,%3Csvg id='Layer_1' data-name='Layer 1' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 18'%3E%3Cdefs%3E%3Cstyle%3E.cls-1%7Bfill:none;stroke:%23181930;stroke-width:0.82px;%7D%3C/style%3E%3C/defs%3E%3Crect class='cls-1' x='0.41' y='0.41' width='17.18' height='17.18' rx='2.86'/%3E%3C/svg%3E");
-
-  &[data-selected="true"] {
-    background-image: url("data:image/svg+xml,%3Csvg id='Layer_1' data-name='Layer 1' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 18'%3E%3Cdefs%3E%3Cstyle%3E.cls-1%7Bfill:%23181930;stroke:%23181930;stroke-width:0.82px;%7D.cls-2%7Bfill:%23fff;%7D%3C/style%3E%3C/defs%3E%3Crect class='cls-1' x='0.41' y='0.41' width='17.18' height='17.18' rx='2.86'/%3E%3Cpath class='cls-2' d='M12.52,5.53a.62.62,0,1,1,.94.8L8.24,12.47a.62.62,0,0,1-.88.06L4.6,10.07a.62.62,0,0,1,.82-.92l2.29,2Z'/%3E%3C/svg%3E");
-  }
-`
-
-export const SHeader = styled.h2`
-  display: flex;
-  flex-direction: column;
-  color: #181930;
-  font-family: "Nanotech", Arial, sans-serif;
-  font-weight: 700;
-  margin: 0 auto;
-  max-width: 37em;
-  line-height: 1;
-  padding: 0;
-  text-align: left;
-  font-size: 3.3em;
-
-  @media (max-width: 768px) {
-    font-size: 1.8em;
-    line-height: 1.4;
-  }
-
-  @media (max-width: 40em) {
-    letter-spacing: 1px;
-  }
-
-  @media (max-width: 640px) {
-    max-width: calc(100vw - 50px);
-    padding: 0;
-    font-size: 2em;
-  }
-`
-
-const EInputSendlinkWrapper = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 10em;
-  grid-column-gap: 8px;
-
-  &[data-successmessage="true"] {
-    display: none;
-  }
-`
-
-const EInputSendlinkWrapper2 = styled.div`
-  display: flex;
-  margin-top: 1em;
-  &[data-successmessage="true"] {
-    display: none;
-  }
-`
-
-const SmsSkika = styled.div`
-  display: none;
-  align-items: center;
-  justify-content: center;
-
-  &[data-successmessage="true"] {
-    display: flex;
-  }
-`
-
-var pattern = /^\+?\d{9,13}/
+const pattern = /^\+?\d{9,13}/
 
 export const SimpleWayToCheck = () => {
   const [numberIsValid, setNumberIsValid] = useState(false)
   const [inputValue, setInputValue] = useState("")
   const [agreedPolicy, setAgreedPolicy] = useState(false)
-  const searchFocus = useFocus()
-  const searchInput = useInput("")
+  const searchFocus = useBoolean(false)
   const [isLoading, setIsLoading] = useState(false)
   const [successMessage, setSuccessMessage] = useState(false)
   const f = useFormatMessage()
 
   const handleChange = e => {
-    setInputValue(e.target.value)
-
-    if (pattern.test(e.target.value)) {
-      setNumberIsValid(true)
-    } else {
-      setNumberIsValid(false)
-    }
+    const value = e.target.value
+    setInputValue(value)
+    setNumberIsValid(pattern.test(value))
   }
 
   const handleSubmitClick = () => {
@@ -192,7 +41,7 @@ export const SimpleWayToCheck = () => {
     setIsLoading(true)
 
     axios
-      .get(`https://app.sosafe.io/app/fake-emergency/send-sms/${inputValue}}`)
+      .get(`https://app.sosafe.io/app/fake-emergency/send-sms/${inputValue}`)
       .then(res => {
         console.log(res)
         setSuccessMessage(true)
@@ -234,7 +83,6 @@ export const SimpleWayToCheck = () => {
               to check how it works
             </span>
           </SHeader>
-
           <TextRoboto
             css={`
               padding: 0;
@@ -249,7 +97,6 @@ export const SimpleWayToCheck = () => {
             position med dig som anhörig och larmcentral. SoSafe är trygghet -
             tillsamans
           </TextRoboto>
-
           <SmsSkika data-successmessage={successMessage}>
             <div
               css={`
@@ -281,18 +128,12 @@ export const SimpleWayToCheck = () => {
               </p>
             </div>
           </SmsSkika>
-
           <EInputSendlinkWrapper data-successmessage={successMessage}>
-            <Wrapper data-active={searchFocus.focused}>
+            <Wrapper data-active={searchFocus.value}>
               <ESearchInput
                 placeholder="Your phone number"
-                {...searchInput.bindToInput}
-                onFocus={() => {
-                  searchFocus.bind.onFocus()
-                }}
-                onBlur={() => {
-                  searchFocus.bind.onBlur()
-                }}
+                onFocus={searchFocus.setTrue}
+                onBlur={searchFocus.setFalse}
                 value={inputValue}
                 onChange={handleChange}
                 onKeyPress={pressOnlyNumbersAndPlus}
@@ -308,7 +149,6 @@ export const SimpleWayToCheck = () => {
               <ESearch onClick={handleSubmitClick}>Send testlink</ESearch>
             </div>
           </EInputSendlinkWrapper>
-
           <EInputSendlinkWrapper2 data-successmessage={successMessage}>
             <SCheckmarkWrapper
               data-selected={agreedPolicy}
@@ -481,3 +321,148 @@ export const SimpleWayToCheck = () => {
     </div>
   )
 }
+
+const SWrapper = styled.section`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin: auto;
+  max-width: 81em;
+  padding: 3em 4em;
+  background: var(--cyan-color);
+  border-radius: 20px;
+
+  @media (max-width: 1000px) {
+    display: flex;
+    flex-direction: column-reverse;
+    padding: 2em;
+  }
+`
+
+const Wrapper = styled.div`
+  max-width: 106em;
+  width: 100%;
+  padding: 0;
+  margin-bottom: 3em;
+  transition: all 0.2s;
+  box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.08);
+
+  margin: 0 auto;
+  border: 1px solid #e4e4e4;
+  border-radius: 10px;
+  overflow: hidden;
+
+  &[data-active="true"] {
+    box-shadow: 0px 2px 13px rgba(0, 0, 0, 0.08);
+  }
+`
+
+const ESearchInput = styled.input`
+  border: 0;
+  border-radius: 6px;
+  width: 100%;
+  height: 50px;
+  font-family: "Roboto", Arial, Helvetica, sans-serif;
+  font-size: 16px;
+  color: #525151;
+  padding: 0 16px;
+
+  @media (max-width: 640px) {
+    font-size: 14px;
+  }
+
+  ::placeholder {
+    color: #e4e4e4;
+  }
+`
+
+const ESearch = styled.button`
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #181930;
+  right: 0;
+  border-radius: 10px;
+  height: 100%;
+  color: #fff;
+  font-weight: 500;
+  padding: 5px 10px;
+  margin: 0;
+  border: 0;
+  outline: 0;
+`
+
+const SCheckmarkWrapper = styled.button`
+  width: 18px;
+  height: 18px;
+  background-repeat: no-repeat;
+  background-position: center;
+  border: 0;
+  margin: 0 4px 0 0;
+  outline: none;
+  border-radius: 4px;
+  background-color: var(--cyan-color);
+  padding: 0;
+  background-image: url("data:image/svg+xml,%3Csvg id='Layer_1' data-name='Layer 1' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 18'%3E%3Cdefs%3E%3Cstyle%3E.cls-1%7Bfill:none;stroke:%23181930;stroke-width:0.82px;%7D%3C/style%3E%3C/defs%3E%3Crect class='cls-1' x='0.41' y='0.41' width='17.18' height='17.18' rx='2.86'/%3E%3C/svg%3E");
+
+  &[data-selected="true"] {
+    background-image: url("data:image/svg+xml,%3Csvg id='Layer_1' data-name='Layer 1' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 18'%3E%3Cdefs%3E%3Cstyle%3E.cls-1%7Bfill:%23181930;stroke:%23181930;stroke-width:0.82px;%7D.cls-2%7Bfill:%23fff;%7D%3C/style%3E%3C/defs%3E%3Crect class='cls-1' x='0.41' y='0.41' width='17.18' height='17.18' rx='2.86'/%3E%3Cpath class='cls-2' d='M12.52,5.53a.62.62,0,1,1,.94.8L8.24,12.47a.62.62,0,0,1-.88.06L4.6,10.07a.62.62,0,0,1,.82-.92l2.29,2Z'/%3E%3C/svg%3E");
+  }
+`
+
+export const SHeader = styled.h2`
+  display: flex;
+  flex-direction: column;
+  color: #181930;
+  font-family: "Nanotech", Arial, sans-serif;
+  font-weight: 700;
+  margin: 0 auto;
+  max-width: 37em;
+  line-height: 1;
+  padding: 0;
+  text-align: left;
+  font-size: 3.3em;
+
+  @media (max-width: 768px) {
+    font-size: 1.8em;
+    line-height: 1.4;
+  }
+
+  @media (max-width: 40em) {
+    letter-spacing: 1px;
+  }
+
+  @media (max-width: 640px) {
+    max-width: calc(100vw - 50px);
+    padding: 0;
+    font-size: 2em;
+  }
+`
+
+const EInputSendlinkWrapper = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 10em;
+  grid-column-gap: 8px;
+
+  &[data-successmessage="true"] {
+    display: none;
+  }
+`
+
+const EInputSendlinkWrapper2 = styled.div`
+  display: flex;
+  margin-top: 1em;
+  &[data-successmessage="true"] {
+    display: none;
+  }
+`
+
+const SmsSkika = styled.div`
+  display: none;
+  align-items: center;
+  justify-content: center;
+
+  &[data-successmessage="true"] {
+    display: flex;
+  }
+`

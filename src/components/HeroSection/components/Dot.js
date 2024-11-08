@@ -1,7 +1,37 @@
 import React, { useEffect } from "react"
-import styled, { keyframes, css } from "styled-components"
+import styled, { keyframes } from "styled-components"
 import { TooltipContent } from "./TooltipContent"
-import { useHover } from "react-hookedup"
+import { useHover } from "usehooks-ts"
+
+export const Dot = React.memo(
+  ({ x, y, active, text, title, canvasIsDrawn, onDotHover, imgComponent }) => {
+    const dotRef = React.useRef(null)
+    const hovered = useHover(dotRef)
+
+    useEffect(() => {
+      onDotHover(!hovered)
+    }, [hovered])
+
+    return (
+      <DotWrapper ref={dotRef} x={x} y={y} data-canvasisdrawn={canvasIsDrawn}>
+        <DotS data-active={active} />
+        <PopupComponentWrapper
+          text={text}
+          title={title}
+          imgComponent={imgComponent}
+        />
+      </DotWrapper>
+    )
+  },
+  (prev, next) =>
+    prev.active === next.active && prev.canvasIsDrawn === next.canvasIsDrawn
+)
+
+const PopupComponentWrapper = ({ text, title, imgComponent }) => (
+  <PopupComponent>
+    <TooltipContent text={text} title={title} imgComponent={imgComponent} />
+  </PopupComponent>
+)
 
 const scale = keyframes`
   0% {
@@ -91,7 +121,9 @@ export const DotWrapper = styled.div`
   transform: ${({ x, y }) => `translateX(${x}em) translateY(${y}em)`};
   filter: opacity(0);
   pointer-events: all;
-  transition: all 0.3s 0s ease-out, filter 0.3s 1.7s ease-out;
+  transition:
+    all 0.3s 0s ease-out,
+    filter 0.3s 1.7s ease-out;
 
   &:hover {
     z-index: 5000;
@@ -120,36 +152,3 @@ export const DotWrapper = styled.div`
     filter: opacity(1);
   }
 `
-
-export const Dot = React.memo(
-  ({ x, y, active, text, title, canvasIsDrawn, onDotHover, imgComponent }) => {
-    const { hovered, bind } = useHover()
-
-    useEffect(() => {
-      if (hovered) {
-        onDotHover(false)
-      } else {
-        onDotHover(true)
-      }
-    }, [hovered])
-
-    return (
-      <DotWrapper x={x} y={y} data-canvasisdrawn={canvasIsDrawn} {...bind}>
-        <DotS data-active={active} />
-        <PopupComponentWrapper
-          text={text}
-          title={title}
-          imgComponent={imgComponent}
-        />
-      </DotWrapper>
-    )
-  },
-  (prev, next) =>
-    prev.active === next.active && prev.canvasIsDrawn === next.canvasIsDrawn
-)
-
-const PopupComponentWrapper = ({ text, title, imgComponent }) => (
-  <PopupComponent>
-    <TooltipContent text={text} title={title} imgComponent={imgComponent} />
-  </PopupComponent>
-)

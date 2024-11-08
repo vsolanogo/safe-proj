@@ -2,7 +2,7 @@ import React, { useState } from "react"
 import styled, { css } from "styled-components"
 import { SharedH1Nanotech, TextRoboto } from "../shared"
 import { pressOnlyNumbersAndPlus } from "../../utils/PressOnlyNumbers"
-import { useInput, useFocus } from "react-hookedup"
+import { useFocus, useInput } from "usehooks-ts" // Import hooks from usehooks-ts
 import { useIntl } from "gatsby-plugin-intl"
 import { useFormatMessage } from "../../hooks"
 import img1 from "../../assets/svg/circleCheckmark.svg"
@@ -16,19 +16,18 @@ export const FourthComponent = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [agreedPolicy, setAgreedPolicy] = useState(false)
   const [successMessage, setSuccessMessage] = useState(false)
-  const searchFocus = useFocus()
-  const searchInput = useInput("")
+  const { ref: searchFocusRef, isFocused: searchFocus } = useFocus()
+  const {
+    value: searchInputValue,
+    setValue: setSearchInputValue,
+    bind: searchInputBind,
+  } = useInput("") // Set up state and bindings with usehooks-ts
   const f = useFormatMessage()
   const intl = useIntl()
 
   const handleChange = e => {
     setInputValue(e.target.value)
-
-    if (pattern.test(e.target.value)) {
-      setNumberIsValid(true)
-    } else {
-      setNumberIsValid(false)
-    }
+    setNumberIsValid(pattern.test(e.target.value))
   }
 
   const handleSubmitClick = () => {
@@ -97,7 +96,7 @@ export const FourthComponent = () => {
           >
             SoSafe
           </b>{" "}
-          makes sure that you, the emergency contact is updated and knows what
+          makes sure that you, the emergency contact, is updated and knows what
           is happening when help is called.
         </STextRobotoDescription>
 
@@ -189,16 +188,11 @@ export const FourthComponent = () => {
             </p>
           </div>
 
-          <Wrapper data-active={searchFocus.focused}>
+          <Wrapper data-active={searchFocus}>
             <ESearchInput
               placeholder={f("emergencyInfo.yournumber")}
-              {...searchInput.bindToInput}
-              onFocus={() => {
-                searchFocus.bind.onFocus()
-              }}
-              onBlur={() => {
-                searchFocus.bind.onBlur()
-              }}
+              {...searchInputBind}
+              ref={searchFocusRef}
               value={inputValue}
               onChange={handleChange}
               onKeyPress={pressOnlyNumbersAndPlus}
@@ -224,9 +218,7 @@ export const FourthComponent = () => {
           >
             <SCheckmarkWrapper
               data-selected={agreedPolicy}
-              onClick={() => {
-                setAgreedPolicy(!agreedPolicy)
-              }}
+              onClick={() => setAgreedPolicy(!agreedPolicy)}
             ></SCheckmarkWrapper>
 
             <TextRoboto

@@ -54,11 +54,9 @@ export const typographyCss = css`
 
 export const Title = styled.h1`
   ${typographyCss};
-  font-family: ${({ theme }) => theme.fonts.title}, sans-serif;
 `
 export const TitleH1 = styled.h1`
   ${typographyCss};
-  font-family: ${({ theme }) => theme.fonts.title}, sans-serif;
 `
 
 Title.defaultProps = {

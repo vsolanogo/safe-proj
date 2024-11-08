@@ -1,51 +1,17 @@
 import React, { useEffect, useRef, useContext, useState } from "react"
 import lottie from "lottie-web"
-import styled, { css } from "styled-components"
-
+import styled from "styled-components"
 import splashAnimation from "../assets/animations/splash.json"
 import { getShowedSplash, setShowedSplash } from "../utils"
 import { MainContext } from "../store/main/contexts"
 import { Helmet } from "react-helmet"
-import { useTimeout } from "react-hookedup"
-
-const Wrapper = styled.div`
-  transition: all 0.3s ease-out;
-  position: fixed;
-  background-color: var(--black-color);
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  top: 0;
-  left: 0;
-  z-index: 999991;
-
-  div {
-    position: relative;
-    left: -10px;
-    top: -20px;
-  }
-
-  filter: opacity(1);
-  visibility: visible;
-
-  &[data-hidesplash="true"] {
-    filter: opacity(0);
-    visibility: hidden;
-  }
-`
-
-const LottieContainer = styled.div`
-  width: 320px;
-  height: 320px;
-`
+import { useTimeout } from "usehooks-ts"
 
 const Component = React.memo(
   ({ hideSplash, dispatch }) => {
     const [removeSelf, setRemoveSelf] = useState(false)
-
     const animContainer = useRef()
+
     useTimeout(() => {
       if (hideSplash) {
         setRemoveSelf(true)
@@ -94,7 +60,6 @@ const Component = React.memo(
 
 export const Splash = () => {
   const { state, dispatch } = useContext(MainContext)
-
   const dontDisplay = getShowedSplash()
 
   useEffect(() => {
@@ -132,3 +97,36 @@ export const Splash = () => {
     </>
   )
 }
+
+const Wrapper = styled.div`
+  transition: all 0.3s ease-out;
+  position: fixed;
+  background-color: var(--black-color);
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  top: 0;
+  left: 0;
+  z-index: 999991;
+
+  div {
+    position: relative;
+    left: -10px;
+    top: -20px;
+  }
+
+  filter: opacity(1);
+  visibility: visible;
+
+  &[data-hidesplash="true"] {
+    filter: opacity(0);
+    visibility: hidden;
+  }
+`
+
+const LottieContainer = styled.div`
+  width: 320px;
+  height: 320px;
+`

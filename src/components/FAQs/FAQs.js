@@ -54,24 +54,7 @@ export const FAQs = () => {
 
   useEffect(() => {
     setIsLoading(true)
-    fetchFAQPosts()
   }, [])
-
-  const fetchFAQPosts = () => {
-    fetch(`https://sosafe.se/wp-json/wl/v1/faq_posts`, {
-      method: "GET",
-    })
-      .then(response => response.status === 200 && response.json())
-      .then(responseData => {
-        responseData && setData(responseData)
-        setIsLoading(false)
-      })
-      .catch(error => {
-        console.error(error)
-        setShowError(true)
-        setIsLoading(false)
-      })
-  }
 
   return (
     <SectionS>

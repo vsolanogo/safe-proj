@@ -1,5 +1,4 @@
 import React from "react"
-import runningServerAnimation from "../../../assets/animations/running-server.json"
 import { useInView } from "react-intersection-observer"
 
 export const ServerLottie = () => {
@@ -9,15 +8,7 @@ export const ServerLottie = () => {
 
   return (
     <div ref={ref}>
-      {/* <Lottie
-        options={{
-          animationData: runningServerAnimation,
-          renderer: "canvas",
-          autoplay: false,
-        }}
-        autoplay={false}
-        isPaused={!inView}
-      /> */}
+
     </div>
   )
 }

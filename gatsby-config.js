@@ -1,9 +1,3 @@
-/**
- * Configure your Gatsby site with this file.
- *
- * See: https://www.gatsbyjs.com/docs/gatsby-config/
- */
-
 const isBuild = process.argv.includes("build")
 
 module.exports = {
@@ -15,7 +9,7 @@ module.exports = {
     title: `Sosafe`,
     description: `Sosafe`,
     author: `Sosafe`,
-    siteUrl: `https://sosafe.se`,
+    siteUrl: `https://google.com`,
   },
 
   plugins: [
@@ -68,51 +62,12 @@ module.exports = {
     },
 
     {
-      resolve: `gatsby-source-wordpress`,
-      options: {
-        minimizeDeprecationNotice: true,
-        baseUrl: `sosafe.se`,
-        protocol: `https`,
-        restApiRoutePrefix: "wp-json",
-        hostingWPCOM: false,
-        useACF: false,
-        includedRoutes: ["**/faq_posts", "**/pages"],
-      },
-    },
-
-    {
       resolve: `gatsby-plugin-intl`,
       options: {
         path: `${__dirname}/src/translations`,
         languages: [`en`, `sv`],
-        defaultLanguage: `sv`,
+        defaultLanguage: `en`,
         // redirect: true,
-      },
-    },
-
-    {
-      resolve: `gatsby-plugin-webfonts`,
-      options: {
-        fonts: {
-          google: [
-            {
-              family: `Roboto`,
-              subsets: [`latin`],
-              variants: [`100`, `300`, `400`, `500`, `600`, `700`, `900`],
-              strategy: "selfHosted",
-              fontDisplay: `swap`,
-            },
-            {
-              family: `Inter`,
-              variants: [`400`, `500`, `600`, `700`, `800`],
-              subsets: [`latin`],
-              strategy: "selfHosted",
-              fontDisplay: `swap`,
-            },
-          ],
-        },
-        useMinify: true,
-        usePreload: false,
       },
     },
 
@@ -137,17 +92,5 @@ module.exports = {
     `gatsby-plugin-image`,
     `gatsby-plugin-sharp`,
     `gatsby-transformer-sharp`,
-
-    // `gatsby-plugin-remove-serviceworker`,
-    // `gatsby-plugin-no-sourcemaps`,
-
-    {
-      resolve: `gatsby-plugin-webpack-bundle-analyser-v2`,
-      options: {
-        analyzerMode: `static`,
-        reportFilename: `wa.html`,
-        openAnalyzer: true,
-      },
-    },
   ].filter(Boolean),
 }

@@ -6,7 +6,6 @@ export const slideItemContainerCss = css`
   position: relative;
   ${mixins.displayFlex("column", "center", "flex-start")};
   background-color: var(--white-color);
-  border: 1px solid ${({ theme }) => theme.colors.borderLight};
   border-radius: 20px;
   padding: 26px 15px 25px 32px;
   transition: all 0.2s linear;

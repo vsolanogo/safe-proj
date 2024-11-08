@@ -15,10 +15,6 @@ const transparentCss = css`
 
   direction: ${({ revers }) => revers && "rtl"};
 
-  border: ${getRem(2)} solid
-    ${({ theme: { colors }, color }) =>
-      color === colors.white ? colors.borderButton : colors.borderLight};
-
   transition: border-color 0.3s ease-in-out;
 
   &:hover,
