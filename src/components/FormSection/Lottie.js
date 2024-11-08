@@ -1,6 +1,5 @@
 import React from "react"
 import { useInView } from "react-intersection-observer"
-import Lottie from "lottie-react-web"
 import formImageBlockAnimation from "../../assets/animations/form-section-animation"
 
 export const LottieComponent = () => {
@@ -10,7 +9,7 @@ export const LottieComponent = () => {
 
   return (
     <div ref={ref}>
-      <Lottie
+      {/* <Lottie
         options={{
           animationData: formImageBlockAnimation,
           renderer: "canvas",
@@ -18,7 +17,7 @@ export const LottieComponent = () => {
         }}
         autoplay={false}
         isPaused={!inView}
-      />
+      /> */}
     </div>
   )
 }

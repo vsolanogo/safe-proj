@@ -1,8 +1,7 @@
 import React, { useRef, useCallback, useEffect } from "react"
 import { motion } from "framer-motion"
 import styled from "styled-components"
-
-import GifPlayer from "../../client-side/gif-player"
+ 
 import button from "../../../assets/images/button-steeper.png"
 import buttonGif from "../../../assets/gif/button-steeper.gif"
 import { handleScroll, removeHandleScroll, scrollTo } from "./helpers"
@@ -19,11 +18,7 @@ const Wrapper = styled(motion.div)`
   }
 `
 
-const GifPlayerS = styled(GifPlayer)`
-  width: 178.11px;
-  height: 140.21px;
-  cursor: pointer;
-`
+ 
 const preventEvent = e => {
   e.preventDefault()
 }
@@ -72,12 +67,7 @@ export const Controller = ({ isStart, setStart, thresholdFromCenter }) => {
 
   return (
     <Wrapper disableGifPlayer={isStart} ref={wrapperRef}>
-      <GifPlayerS
-        ref={ref}
-        still={button}
-        gif={buttonGif}
-        onClick={() => handleToggle(true)}
-      />
+
       <ClickPointer isStart={isStart} />
     </Wrapper>
   )

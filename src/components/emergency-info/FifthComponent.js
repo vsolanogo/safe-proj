@@ -14,7 +14,6 @@ import i5svg from "../../assets/svg/alarm.svg"
 import styled, { css, keyframes } from "styled-components"
 import PulsingLottiejson from "../../assets/animations/pulsing.json"
 import { useInView } from "react-intersection-observer"
-import Lottie from "lottie-react-web"
 
 const SText = styled.p`
   color: #333;
@@ -179,7 +178,7 @@ export const PulsatingEllipse = () => {
 
   return (
     <SCanvasWrapper ref={ref} id="qweqweqwe">
-      <Lottie
+      {/* <Lottie
         options={{
           animationData: PulsingLottiejson,
           renderer: "canvas",
@@ -189,7 +188,7 @@ export const PulsatingEllipse = () => {
         width={70}
         height={70}
         isPaused={!inView}
-      />
+      /> */}
     </SCanvasWrapper>
   )
 }

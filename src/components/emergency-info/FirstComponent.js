@@ -5,7 +5,6 @@ import Arrow from "../../assets/svg/arrow.svg"
 import { StaticImage } from "gatsby-plugin-image"
 import styled from "styled-components"
 import { useInView } from "react-intersection-observer"
-import Lottie from "lottie-react-web"
 import PulsingLottiejson from "../../assets/animations/pulsing.json"
 import img1 from "../../assets/images/emergency/map3.png"
 import img2 from "../../assets/images/emergency/path2.png"
@@ -88,7 +87,7 @@ export const PulsatingEllipse = () => {
   return (
     <>
       <SPulseWrapper ref={ref}>
-        <Lottie
+        {/* <Lottie
           options={{
             animationData: PulsingLottiejson,
             renderer: "canvas",
@@ -98,7 +97,7 @@ export const PulsatingEllipse = () => {
           width={70}
           height={70}
           isPaused={!inView}
-        />
+        /> */}
       </SPulseWrapper>
     </>
   )

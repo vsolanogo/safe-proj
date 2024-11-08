@@ -1,169 +1,12 @@
 import React, { useState } from "react"
 import styled, { css } from "styled-components"
 import { SharedH1Nanotech, TextRoboto } from "../shared"
-import { parsePhoneNumberFromString } from "libphonenumber-js"
 import { pressOnlyNumbersAndPlus } from "../../utils/PressOnlyNumbers"
 import { useInput, useFocus } from "react-hookedup"
 import { useIntl } from "gatsby-plugin-intl"
 import { useFormatMessage } from "../../hooks"
 import img1 from "../../assets/svg/circleCheckmark.svg"
 import axios from "axios"
-
-const SWrapper = styled.section`
-  align-items: center;
-  display: flex;
-  flex-direction: column;
-  justify-items: center;
-  margin: auto;
-  max-width: 58em;
-  padding: 0 2em;
-`
-
-const SForm = styled.div`
-  background: #fff;
-  box-shadow: 0px -3px 59px rgba(41, 41, 42, 0.05);
-  border-radius: 20px;
-  display: flex;
-  flex-direction: column;
-  padding: 22px 33px;
-  max-width: 100%;
-  width: 31em;
-  margin: auto;
-  position: relative;
-  overflow: hidden;
-
-  &[data-isloading="true"] {
-    * {
-      cursor: progress !important;
-    }
-  }
-`
-
-const SSuccessMessage = styled.div`
-  background: #fff;
-  position: absolute;
-  z-index: 5;
-  width: 100%;
-  height: 100%;
-  align-items: center;
-  justify-content: center;
-  padding: 22px 33px;
-  left: 0;
-  top: 0;
-  display: none;
-
-  &[data-display="true"] {
-    display: flex;
-  }
-`
-
-const Wrapper = styled.div`
-  max-width: 106em;
-  width: 100%;
-  padding: 0;
-  display: grid;
-  grid-template-columns: 1fr 60px;
-  margin-bottom: 3em;
-  transition: all 0.2s;
-  box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.08);
-
-  margin: 0 auto;
-  border: 1px solid #e4e4e4;
-  border-radius: 10px;
-  overflow: hidden;
-
-  &[data-active="true"] {
-    box-shadow: 0px 2px 13px rgba(0, 0, 0, 0.08);
-  }
-`
-
-const ESearchInput = styled.input`
-  border: 0;
-  border-radius: 6px;
-  width: 100%;
-  height: 50px;
-  font-family: "Roboto", Arial, Helvetica, sans-serif;
-  font-size: 16px;
-  color: #525151;
-  padding: 0 16px;
-
-  @media (max-width: 640px) {
-    font-size: 14px;
-  }
-
-  ::placeholder {
-    color: #e4e4e4;
-  }
-`
-
-const ESearch = styled.button`
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: var(--cyan-color);
-  position: absolute;
-  right: 0;
-  border-radius: 10px;
-  height: 100%;
-  border: 4px solid #fff;
-  color: #181930;
-  min-width: 122px;
-  font-weight: 500;
-  padding: 0;
-  margin: 0;
-  border: 0;
-
-  img {
-    height: 18px;
-  }
-
-  :hover {
-    background-color: #43c7aa;
-  }
-
-  :active {
-    background-color: #54eccb;
-  }
-`
-
-const SCheckmarkWrapper = styled.button`
-  width: 18px;
-  height: 18px;
-  background-repeat: no-repeat;
-  background-position: center;
-  border: 0;
-  margin: 0 4px 0 0;
-  outline: none;
-  border-radius: 4px;
-  padding: 0;
-  background-image: url("data:image/svg+xml,%3Csvg id='Layer_1' data-name='Layer 1' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 18'%3E%3Cdefs%3E%3Cstyle%3E.cls-1%7Bfill:%23fff;stroke:%23e4e4e4;%7D%3C/style%3E%3C/defs%3E%3Crect class='cls-1' x='0.5' y='0.5' width='17' height='17' rx='2.5'/%3E%3C/svg%3E");
-
-  &[data-selected="true"] {
-    background-image: url("data:image/svg+xml,%3Csvg id='Layer_1' data-name='Layer 1' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 18'%3E%3Cdefs%3E%3Cstyle%3E.cls-1%7Bfill:%234be8c5;stroke:%234be8c5;stroke-width:0.82px;%7D.cls-2%7Bfill:%23181930;%7D%3C/style%3E%3C/defs%3E%3Crect class='cls-1' x='0.41' y='0.41' width='17.18' height='17.18' rx='2.86'/%3E%3Cpath class='cls-2' d='M12.52,5.53a.62.62,0,1,1,.94.8L8.24,12.47a.62.62,0,0,1-.88.06L4.6,10.07a.62.62,0,0,1,.82-.92l2.29,2Z'/%3E%3C/svg%3E");
-  }
-`
-
-const STextRobotoDescription = styled.p`
-  color: #181930;
-  font-family: "Roboto", Arial, sans-serif;
-  font-size: 1em;
-  padding: 0;
-  margin: 1.5em auto 1em auto;
-  font-weight: 300;
-  line-height: 1.8;
-  text-align: center;
-  max-width: 35em;
-
-  @media (max-width: 640px) {
-    max-width: calc(100vw - 50px);
-    padding: 0;
-  }
-
-  &[data-dontdisplay="true"] {
-    display: none;
-  }
-`
 
 var pattern = /^\+?\d{9,13}/
 
@@ -202,7 +45,9 @@ export const FourthComponent = () => {
     setIsLoading(true)
 
     axios
-      .get(`https://app.sosafe.io/app/fake-emergency/send-sms/${inputValue}?lang=swe`)
+      .get(
+        `https://app.sosafe.io/app/fake-emergency/send-sms/${inputValue}?lang=swe`
+      )
       .then(res => {
         console.log(res)
         setSuccessMessage(true)
@@ -415,3 +260,159 @@ export const FourthComponent = () => {
     </div>
   )
 }
+
+const SWrapper = styled.section`
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-items: center;
+  margin: auto;
+  max-width: 58em;
+  padding: 0 2em;
+`
+
+const SForm = styled.div`
+  background: #fff;
+  box-shadow: 0px -3px 59px rgba(41, 41, 42, 0.05);
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  padding: 22px 33px;
+  max-width: 100%;
+  width: 31em;
+  margin: auto;
+  position: relative;
+  overflow: hidden;
+
+  &[data-isloading="true"] {
+    * {
+      cursor: progress !important;
+    }
+  }
+`
+
+const SSuccessMessage = styled.div`
+  background: #fff;
+  position: absolute;
+  z-index: 5;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  padding: 22px 33px;
+  left: 0;
+  top: 0;
+  display: none;
+
+  &[data-display="true"] {
+    display: flex;
+  }
+`
+
+const Wrapper = styled.div`
+  max-width: 106em;
+  width: 100%;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr 60px;
+  margin-bottom: 3em;
+  transition: all 0.2s;
+  box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.08);
+
+  margin: 0 auto;
+  border: 1px solid #e4e4e4;
+  border-radius: 10px;
+  overflow: hidden;
+
+  &[data-active="true"] {
+    box-shadow: 0px 2px 13px rgba(0, 0, 0, 0.08);
+  }
+`
+
+const ESearchInput = styled.input`
+  border: 0;
+  border-radius: 6px;
+  width: 100%;
+  height: 50px;
+  font-family: "Roboto", Arial, Helvetica, sans-serif;
+  font-size: 16px;
+  color: #525151;
+  padding: 0 16px;
+
+  @media (max-width: 640px) {
+    font-size: 14px;
+  }
+
+  ::placeholder {
+    color: #e4e4e4;
+  }
+`
+
+const ESearch = styled.button`
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--cyan-color);
+  position: absolute;
+  right: 0;
+  border-radius: 10px;
+  height: 100%;
+  border: 4px solid #fff;
+  color: #181930;
+  min-width: 122px;
+  font-weight: 500;
+  padding: 0;
+  margin: 0;
+  border: 0;
+
+  img {
+    height: 18px;
+  }
+
+  :hover {
+    background-color: #43c7aa;
+  }
+
+  :active {
+    background-color: #54eccb;
+  }
+`
+
+const SCheckmarkWrapper = styled.button`
+  width: 18px;
+  height: 18px;
+  background-repeat: no-repeat;
+  background-position: center;
+  border: 0;
+  margin: 0 4px 0 0;
+  outline: none;
+  border-radius: 4px;
+  padding: 0;
+  background-image: url("data:image/svg+xml,%3Csvg id='Layer_1' data-name='Layer 1' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 18'%3E%3Cdefs%3E%3Cstyle%3E.cls-1%7Bfill:%23fff;stroke:%23e4e4e4;%7D%3C/style%3E%3C/defs%3E%3Crect class='cls-1' x='0.5' y='0.5' width='17' height='17' rx='2.5'/%3E%3C/svg%3E");
+
+  &[data-selected="true"] {
+    background-image: url("data:image/svg+xml,%3Csvg id='Layer_1' data-name='Layer 1' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 18'%3E%3Cdefs%3E%3Cstyle%3E.cls-1%7Bfill:%234be8c5;stroke:%234be8c5;stroke-width:0.82px;%7D.cls-2%7Bfill:%23181930;%7D%3C/style%3E%3C/defs%3E%3Crect class='cls-1' x='0.41' y='0.41' width='17.18' height='17.18' rx='2.86'/%3E%3Cpath class='cls-2' d='M12.52,5.53a.62.62,0,1,1,.94.8L8.24,12.47a.62.62,0,0,1-.88.06L4.6,10.07a.62.62,0,0,1,.82-.92l2.29,2Z'/%3E%3C/svg%3E");
+  }
+`
+
+const STextRobotoDescription = styled.p`
+  color: #181930;
+  font-family: "Roboto", Arial, sans-serif;
+  font-size: 1em;
+  padding: 0;
+  margin: 1.5em auto 1em auto;
+  font-weight: 300;
+  line-height: 1.8;
+  text-align: center;
+  max-width: 35em;
+
+  @media (max-width: 640px) {
+    max-width: calc(100vw - 50px);
+    padding: 0;
+  }
+
+  &[data-dontdisplay="true"] {
+    display: none;
+  }
+`

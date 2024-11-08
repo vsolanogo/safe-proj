@@ -1,6 +1,5 @@
 import React, { useState, useCallback } from "react"
 import { IntlContextConsumer, changeLocale, useIntl } from "gatsby-plugin-intl"
-import { Dropdown, DropdownItem, DropdownMenu } from "styled-dropdown-component"
 import styled from "styled-components"
 
 import { Button } from "../../components"
@@ -10,40 +9,40 @@ import { getRem } from "../../utils"
 import { device, size } from "../../styles"
 import { useWindowSize } from "../../hooks"
 
-const StyledDropdownMenu = styled(DropdownMenu)`
-  box-shadow: 10px 25px 36px rgba(41, 41, 42, 0.07);
-  border-radius: ${getRem(10)};
-  border: none;
-  margin-top: ${getRem(7)};
-  padding: ${getRem(9)} 0;
-  min-width: ${getRem(40)};
+// const StyledDropdownMenu = styled(DropdownMenu)`
+//   box-shadow: 10px 25px 36px rgba(41, 41, 42, 0.07);
+//   border-radius: ${getRem(10)};
+//   border: none;
+//   margin-top: ${getRem(7)};
+//   padding: ${getRem(9)} 0;
+//   min-width: ${getRem(40)};
 
-  @media ${device.laptop} {
-    min-width: ${getRem(166)};
-    margin-left: -${getRem(134)};
-  }
+//   @media ${device.laptop} {
+//     min-width: ${getRem(166)};
+//     margin-left: -${getRem(134)};
+//   }
 
-  @media ${device.desktop} {
-    margin-left: 0;
-  }
-`
+//   @media ${device.desktop} {
+//     margin-left: 0;
+//   }
+// `
 
-const StyledDropdownItem = styled(DropdownItem)`
-  padding: ${getRem(7)} ${getRem(9)};
-  margin: ${getRem(1)} ${getRem(11)} ${getRem(1)} ${getRem(7)};
-  text-decoration: none;
-  border-radius: ${getRem(10)};
-  cursor: pointer;
-  min-width: ${getRem(40)};
+// const StyledDropdownItem = styled(DropdownItem)`
+//   padding: ${getRem(7)} ${getRem(9)};
+//   margin: ${getRem(1)} ${getRem(11)} ${getRem(1)} ${getRem(7)};
+//   text-decoration: none;
+//   border-radius: ${getRem(10)};
+//   cursor: pointer;
+//   min-width: ${getRem(40)};
 
-  @media ${device.laptop} {
-    min-width: ${getRem(166)};
-  }
+//   @media ${device.laptop} {
+//     min-width: ${getRem(166)};
+//   }
 
-  :hover {
-    background-color: ${({ theme }) => theme.colors.dropdownItemHoverBg};
-  }
-`
+//   :hover {
+//     background-color: ${({ theme }) => theme.colors.dropdownItemHoverBg};
+//   }
+// `
 
 const ButtonS = styled(Button)`
   height: ${getRem(40)};
@@ -70,7 +69,7 @@ export const Languages = ({ color }) => {
 
   return (
     <div>
-      <Dropdown>
+      {/* <Dropdown>
         <ButtonS
           color={color}
           dropdownToggle
@@ -102,7 +101,7 @@ export const Languages = ({ color }) => {
             }
           </IntlContextConsumer>
         </StyledDropdownMenu>
-      </Dropdown>
+      </Dropdown> */}
     </div>
   )
 }
